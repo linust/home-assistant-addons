@@ -11,5 +11,5 @@ if [ "$(jq --raw-output '.debug' $CONFIG_PATH)" = "true" ]; then
   echo "Debug mode enabled for MeshCommander."
 fi
 
-# Start MeshCommander and bind to localhost for Ingress
-exec meshcommander --listen 127.0.0.1:3000 --basepath / $DEBUG_FLAG
+# Start MeshCommander and bind to all interfaces for Ingress
+exec meshcommander --listen 0.0.0.0:3000 --basepath / $DEBUG_FLAG
