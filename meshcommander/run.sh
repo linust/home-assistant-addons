@@ -1,5 +1,5 @@
 #!/usr/bin/with-contenv bashio
 
 # Start MeshCommander
-echo "Starting MeshCommander..."
-meshcommander
+bashio::log.info "Starting MeshCommander..."
+exec meshcommander

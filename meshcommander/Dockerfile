@@ -18,4 +18,5 @@ COPY run.sh /usr/bin/run.sh
 RUN chmod +x /usr/bin/run.sh
 
 # Start the service using S6 overlay
-CMD [ "/usr/bin/run.sh" ]
+#CMD [ "/usr/bin/run.sh" ]
+CMD [ "/init" ]
