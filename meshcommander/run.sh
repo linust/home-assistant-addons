@@ -12,4 +12,4 @@ if [ "$(jq --raw-output '.debug' $CONFIG_PATH)" = "true" ]; then
 fi
 
 # Start MeshCommander and bind to localhost for Ingress
-exec meshcommander --listen 127.0.0.1:3000 $DEBUG_FLAG
+exec meshcommander --listen 127.0.0.1:3000 --basepath / $DEBUG_FLAG

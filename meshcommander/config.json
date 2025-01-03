@@ -1,6 +1,6 @@
 {
   "name": "MeshCommander",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "slug": "meshcommander",
   "description": "Run MeshCommander in Home Assistant",
   "arch": ["amd64", "armv7", "armhf", "aarch64"],
