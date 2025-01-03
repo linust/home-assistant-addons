@@ -5,18 +5,24 @@ FROM $BUILD_FROM
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Expose port
-EXPOSE 3000
-
 # Install dependencies
 RUN apk add --no-cache nodejs npm
 
-# Install MeshCommander
+# Install MeshCommander globally
 RUN npm install -g meshcommander
 
-# Debugging: Show installed files
-# RUN echo "Installed files:" && ls -la /usr/bin
+# Debugging: Display installed files
+RUN echo "Installed files:" && ls -la /usr/local/bin
 
-# Configure MeshCommander to bind to 0.0.0.0 by default
+# Set environment variable to bind MeshCommander to all interfaces
 ENV MESHCOMMANDER_ARGS="--listen 0.0.0.0"
-CMD ["/usr/local/bin/meshcommander", "--listen", "0.0.0.0"]
+
+# Expose the default MeshCommander port
+EXPOSE 3000
+
+# Copy the startup script
+COPY run.sh /usr/bin/run.sh
+RUN chmod +x /usr/bin/run.sh
+
+# Start with S6 init system
+CMD [ "/init" ]

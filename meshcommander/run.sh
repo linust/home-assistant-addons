@@ -1,9 +1,7 @@
 #!/usr/bin/with-contenv bashio
 
-# Debugging information
-bashio::log.info "Starting MeshCommander debug mode..."
-bashio::log.info "Environment Variables: $(env)"
+# Log the startup process
+bashio::log.info "Starting MeshCommander..."
 
-# Attempt to start MeshCommander
-bashio::log.info "Executing MeshCommander..."
-exec meshcommander || bashio::log.error "MeshCommander failed to start. Check your configuration and dependencies."
+# Start MeshCommander and bind to all interfaces
+exec meshcommander --listen 0.0.0.0
