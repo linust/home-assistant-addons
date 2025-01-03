@@ -1,15 +1,11 @@
 {
   "name": "MeshCommander",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "slug": "meshcommander",
   "description": "Run MeshCommander in Home Assistant",
   "arch": ["amd64", "armv7", "armhf", "aarch64"],
   "startup": "application",
   "boot": "auto",
-  "ports": {
-    "3000/tcp": 3000
-  },
-  "webui": "http://[HOST]:[PORT:3000]",
   "ingress": true,
   "ingress_port": 3000,
   "options": {},
