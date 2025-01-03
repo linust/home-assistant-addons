@@ -1,6 +1,6 @@
 {
   "name": "MeshCommander",
-  "version": "1.0.12",
+  "version": "1.1.1",
   "slug": "meshcommander",
   "description": "Run MeshCommander in Home Assistant",
   "arch": ["amd64", "armv7", "armhf", "aarch64"],
@@ -8,7 +8,11 @@
   "boot": "auto",
   "ingress": true,
   "ingress_port": 3000,
-  "options": {},
-  "schema": {},
+  "options": {
+    "debug": false
+  },
+  "schema": {
+    "debug": "bool"
+  },
   "init": "false"
 }
