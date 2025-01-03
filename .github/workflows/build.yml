@@ -1,0 +1,22 @@
+name: Build Add-ons
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+# TODO: add validation of build?
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Add-on
+        run: docker build -t addon-meshcommander ./meshcommander
