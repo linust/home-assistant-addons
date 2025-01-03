@@ -1,5 +1,7 @@
 #!/usr/bin/with-contenv bashio
 
-# Start MeshCommander
+# Log the start of the service
 bashio::log.info "Starting MeshCommander..."
+
+# Start MeshCommander and replace the current shell process
 exec meshcommander
