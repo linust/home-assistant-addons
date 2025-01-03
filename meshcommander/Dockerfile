@@ -13,5 +13,9 @@ RUN npm install -g meshcommander
 # Expose port for MeshCommander
 EXPOSE 3000
 
-# Run MeshCommander
-CMD ["meshcommander"]
+# Copy run script
+COPY run.sh /usr/bin/run.sh
+RUN chmod +x /usr/bin/run.sh
+
+# Start the service using S6 overlay
+CMD [ "/usr/bin/run.sh" ]
