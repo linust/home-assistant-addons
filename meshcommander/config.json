@@ -1,6 +1,6 @@
 {
   "name": "MeshCommander",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "slug": "meshcommander",
   "description": "Run MeshCommander in Home Assistant",
   "arch": ["amd64", "armv7", "armhf", "aarch64"],
@@ -13,6 +13,5 @@
   "ingress": true,
   "ingress_port": 3000,
   "options": {},
-  "schema": {},
-  "image": "local/meshcommander"
+  "schema": {}
 }
