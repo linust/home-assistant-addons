@@ -1,5 +1,8 @@
+ARG BUILD_FROM
+FROM $BUILD_FROM
+
 # Use a lightweight Node.js base image
-FROM node:alpine
+# FROM node:alpine
 
 # Install jq for JSON parsing
 # RUN apk add --no-cache jq
@@ -9,15 +12,9 @@ ARG MC_VERSION=unknown
 
 RUN apk update  \
     && apk upgrade \
-    && apk add --no-cache unzip  \
+    && apk add --no-cache unzip npm \
     && apk cache clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# RUN apk update 
-# RUN apk upgrade 
-# RUN apk add --no-cache unzip 
-# RUN apk clean 
-# RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # https://www.npmjs.com/package/meshcommander
 RUN mkdir /meshcommander \
@@ -25,7 +22,6 @@ RUN mkdir /meshcommander \
     && npm install meshcommander \
     && echo -n "Meshcommander version: " \
     && npm info meshcommander version
-
 
 # Expose the default MeshCommander port for Ingress
 EXPOSE 3000
