@@ -1,40 +1,24 @@
 ARG BUILD_FROM=ghcr.io/hassio-addons/base:latest
 FROM $BUILD_FROM
 
-# Use a lightweight Node.js base image
-# FROM node:alpine
-
-# Install jq for JSON parsing
-# RUN apk add --no-cache jq
 
 ENV DEBIAN_FRONTEND noninteractive
 ARG MC_VERSION=unknown
 
 RUN apk update  \
     && apk upgrade \
-    && apk add --no-cache unzip npm nodejs \
+    && apk add --no-cache unzip npm nodejs tini \
     && apk cache clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    tini
 
-# https://www.npmjs.com/package/meshcommander
-RUN mkdir /meshcommander \
-    && cd /meshcommander \
-    && npm install meshcommander \
-    && echo -n "Meshcommander version: " \
-    && npm info meshcommander version
-
-# Expose the default MeshCommander port for Ingress
 EXPOSE 3000
 
+ENTRYPOINT ["/sbin/tini", "--"]
 
-WORKDIR /meshcommander/node_modules/meshcommander
+RUN mkdir /app
+WORKDIR /app
+RUN npm install meshcommander
+
+WORKDIR /app/node_modules/meshcommander
 CMD ["node", "meshcommander", "--any"]
-# "--any" binds on all interfaces, not only 127.0.0.1
-
-# Copy the startup script
-#COPY run.sh /usr/bin/run.sh
-#RUN chmod +x /usr/bin/run.sh
-
-# Start the service
-#CMD ["/usr/bin/run.sh"]
-
