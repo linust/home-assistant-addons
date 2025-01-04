@@ -1,4 +1,4 @@
-ARG BUILD_FROM
+ARG BUILD_FROM=node:alpine
 FROM $BUILD_FROM
 
 # Use a lightweight Node.js base image
