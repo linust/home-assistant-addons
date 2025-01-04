@@ -12,4 +12,4 @@ if [ "$(jq --raw-output '.debug' $CONFIG_PATH)" = "true" ]; then
 fi
 
 # Start MeshCommander and bind to all interfaces for Ingress
-exec meshcommander --listen 0.0.0.0:3000 --basepath / $DEBUG_FLAG
+exec meshcommander --any --basepath / $DEBUG_FLAG
