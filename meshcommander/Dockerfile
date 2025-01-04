@@ -1,4 +1,4 @@
-ARG BUILD_FROM=node:alpine
+ARG BUILD_FROM=ghcr.io/hassio-addons/base:latest
 FROM $BUILD_FROM
 
 # Use a lightweight Node.js base image
@@ -12,7 +12,7 @@ ARG MC_VERSION=unknown
 
 RUN apk update  \
     && apk upgrade \
-    && apk add --no-cache unzip npm \
+    && apk add --no-cache unzip npm nodejs \
     && apk cache clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

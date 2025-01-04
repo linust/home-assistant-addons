@@ -1,5 +1,5 @@
 name: MeshCommander
-version: "1.1.12"
+version: "1.1.13"
 slug: meshcommander
 description: Run MeshCommander in Home Assistant
 arch:
@@ -9,6 +9,8 @@ arch:
   - aarch64
 startup: application
 boot: auto
+ports:
+  3000/tcp: 3000
 ingress: true
 ingress_port: 3000
 #options:
@@ -16,5 +18,5 @@ ingress_port: 3000
 #schema:
 #  debug: bool
 init: "false"
-# webui: "http://[HOST]:[PORT:3000]"
+webui: "http://[HOST]:[PORT:3000]"
 
