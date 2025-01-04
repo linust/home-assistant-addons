@@ -7,17 +7,17 @@ FROM node:alpine
 ENV DEBIAN_FRONTEND noninteractive
 ARG MC_VERSION=unknown
 
-# RUN apt-get -qy update \
-#     && apt-get -qy dist-upgrade \
-#     && apt-get -qy install unzip \
-#     && apt-get -y clean \
-#     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apk update  \
+    && apk upgrade \
+    && apk add --no-cache unzip  \
+    && apk cache clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN apt-get -qy update 
-RUN apt-get -qy dist-upgrade 
-RUN apt-get -qy install unzip 
-RUN apt-get -y clean 
-RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# RUN apk update 
+# RUN apk upgrade 
+# RUN apk add --no-cache unzip 
+# RUN apk clean 
+# RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # https://www.npmjs.com/package/meshcommander
 RUN mkdir /meshcommander \
