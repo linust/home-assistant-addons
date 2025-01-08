@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bashio
 set -e
 
 # Load environment variables using bashio
@@ -24,7 +24,7 @@ else
     bashio::log.info "Configuration file not found. Creating from template."
 
     # Use tempio to render the configuration file
-    bashio::log.info "Rendering configuration using tempio."
+    bashio::log.info "Rendering configuration"
 
     tempio \
         -template "$TEMPLATE_FILE" \
