@@ -1,5 +1,5 @@
 name: MeshCentral
-version: "0.0.1"
+version: "0.0.2"
 slug: meshcentral
 description: Run MeshCentral in Home Assistant
 arch:
@@ -17,6 +17,6 @@ ingress_port: 80
 #  debug: false
 #schema:
 #  debug: bool
-#init: "false"
+init: "false"
 webui: "http://[HOST]:[PORT:80]"
 
