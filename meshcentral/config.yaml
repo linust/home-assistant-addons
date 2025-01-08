@@ -1,5 +1,5 @@
 name: MeshCentral
-version: "0.0.2"
+version: "0.0.3"
 slug: meshcentral
 description: Run MeshCentral in Home Assistant
 arch:
@@ -13,8 +13,14 @@ boot: auto
 #  3000/tcp: 3000
 ingress: true
 ingress_port: 80
-#options:
-#  debug: false
+options:
+  debug: false
+  hostname: local
+  allow_new_accounts: false
+  webrtc: true
+  backups_pw: secret
+  backup_interval: 7
+  backup_keep_days: 70
 #schema:
 #  debug: bool
 init: "false"

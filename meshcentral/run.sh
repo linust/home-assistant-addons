@@ -5,7 +5,6 @@ set -e
 HOSTNAME=$(bashio::config 'hostname')
 ALLOW_NEW_ACCOUNTS=$(bashio::config 'allow_new_accounts')
 WEBRTC=$(bashio::config 'webrtc')
-IFRAME=$(bashio::config 'iframe')
 BACKUPS_PW=$(bashio::config 'backups_pw')
 BACKUP_INTERVAL=$(bashio::config 'backup_interval')
 BACKUP_KEEP_DAYS=$(bashio::config 'backup_keep_days')
