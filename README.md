@@ -1,3 +1,4 @@
 Linus' Home Assistant Add-ons
 
-* Meshcommander
+* MeshCommander (WIP)
+* MeshCentral (WIP)
