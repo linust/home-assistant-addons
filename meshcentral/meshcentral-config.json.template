@@ -1,0 +1,34 @@
+{
+  "$schema": "http://info.meshcentral.com/downloads/meshcentral-config-schema.json",
+  "settings": {
+    "cert": "{{ hostname }}",
+    "_WANonly": true,
+    "_LANonly": true,
+    "_sessionKey": "{{ session_key }}",
+    "port": 443,
+    "_aliasPort": 443,
+    "redirPort": 80,
+    "_redirAliasPort": 80,
+    "AgentPong": 300,
+    "TLSOffload": false,
+    "SelfUpdate": false,
+    "AllowFraming": true,
+    "WebRTC": {{ webrtc }},
+    "AutoBackup": {
+      "backupPath": "/opt/meshcentral/meshcentral-backups",
+      "backupIntervalHours": {{ backup_interval }},
+      "keepLastDaysBackup": {{ backup_keep_days }},
+      "zippassword": "{{ backups_pw }}"
+    }
+  },
+  "domains": {
+    "": {
+      "_title": "MyServer",
+      "_title2": "Servername",
+      "_minify": true,
+      "NewAccounts": {{ allow_new_accounts }},
+      "_userNameIsEmail": true,
+      "_certUrl": "my.reverse.proxy"
+    }
+  }
+}

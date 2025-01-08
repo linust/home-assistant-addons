@@ -1,0 +1,22 @@
+name: MeshCentral
+version: "0.0.1"
+slug: meshcentral
+description: Run MeshCentral in Home Assistant
+arch:
+  - amd64
+  - armv7
+  - armhf
+  - aarch64
+startup: application
+boot: auto
+#ports:
+#  3000/tcp: 3000
+ingress: true
+ingress_port: 80
+#options:
+#  debug: false
+#schema:
+#  debug: bool
+#init: "false"
+webui: "http://[HOST]:[PORT:80]"
+
