@@ -29,7 +29,7 @@ else
     tempio \
         -template "$TEMPLATE_FILE" \
         -out "$CONFIG_FILE" \
-        -values <(bashio::var.json \
+        -conf <(bashio::var.json \
             hostname "$HOSTNAME" \
             allow_new_accounts "$ALLOW_NEW_ACCOUNTS" \
             webrtc "$WEBRTC" \
