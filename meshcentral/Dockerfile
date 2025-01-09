@@ -41,7 +41,8 @@ VOLUME /opt/meshcentral/meshcentral-backups
 EXPOSE 80 443
 
 # Copy the configuration template
-COPY meshcentral-config.json.template /opt/meshcentral/config.json.template
+COPY meshcentral-config.json.template /opt/meshcentral/meshcentral-config.json.template
+
 
 # Copy the startup script
 COPY run.sh run.sh
