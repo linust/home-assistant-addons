@@ -30,7 +30,7 @@ else
     bashio::log.info "Rendering configuration"
 
     bashio::log.debug <(bashio::var.json \
-            aaa "$HOSTNAME" \
+            hostname "$HOSTNAME" \
             allow_new_accounts "$ALLOW_NEW_ACCOUNTS" \
             webrtc "$WEBRTC" \
             backups_pw "$BACKUPS_PW" \
