@@ -4,7 +4,7 @@ set -e
 bashio::log.info before
 
 # Load environment variables using bashio
-AAA=$(bashio::config 'aaa')
+#AAA=$(bashio::config 'aaa')
 bashio::log.info debug1
 ALLOW_NEW_ACCOUNTS=$(bashio::config 'allow_new_accounts')
 bashio::log.info debug2
