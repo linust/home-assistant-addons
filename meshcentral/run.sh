@@ -9,12 +9,12 @@ BACKUPS_PW=$(bashio::config 'backups_pw')
 BACKUP_INTERVAL=$(bashio::config 'backup_interval')
 BACKUP_KEEP_DAYS=$(bashio::config 'backup_keep_days')
 
-bashio::log.debug before
+bashio::log.info before
 # Ensure SESSION_KEY exists or generate a new one
 SESSION_KEY=$(bashio::cache.get 'session_key' || echo "$(head /dev/urandom | tr -dc 'A-Za-z0-9' | head -c 32)")
 bashio::cache.set 'session_key' "${SESSION_KEY}"
 
-bashio::log.debug after
+bashio::log.info after
 
 CONFIG_FILE="meshcentral-data/config.json"
 TEMPLATE_FILE="meshcentral-config.json.template"
