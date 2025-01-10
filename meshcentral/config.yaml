@@ -1,5 +1,5 @@
 name: MeshCentral
-version: "0.0.3"
+version: "0.0.4"
 slug: meshcentral
 description: Run MeshCentral in Home Assistant
 arch:
@@ -23,12 +23,12 @@ options:
   backup_keep_days: 70
 schema:
   debug: bool
-  hostname: string
+  hostname: str
   allow_new_accounts: bool
   webrtc: bool
-  backups_pw: string
-  backup_interval: integer
-  backup_keep_days: integer
+  backups_pw: str
+  backup_interval: int
+  backup_keep_days: int
 init: false
 webui: "http://[HOST]:[PORT:80]"
 
