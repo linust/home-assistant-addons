@@ -1,21 +1,14 @@
 #!/usr/bin/env bashio
 set -e
 
-bashio::log.info before
 
 # Load environment variables using bashio
-#AAA=$(bashio::config 'aaa')
-bashio::log.info debug1
+HOSTNAME=$(bashio::config 'hostname')
 ALLOW_NEW_ACCOUNTS=$(bashio::config 'allow_new_accounts')
-bashio::log.info debug2
 WEBRTC=$(bashio::config 'webrtc')
-bashio::log.info debug3
 BACKUPS_PW=$(bashio::config 'backups_pw')
-bashio::log.info debug4
 BACKUP_INTERVAL=$(bashio::config 'backup_interval')
-bashio::log.info debug5
 BACKUP_KEEP_DAYS=$(bashio::config 'backup_keep_days')
-bashio::log.info after
 
 # Ensure SESSION_KEY exists or generate a new one
 SESSION_KEY=$(bashio::cache.get 'session_key' || echo "$(head /dev/urandom | tr -dc 'A-Za-z0-9' | head -c 32)")
@@ -37,7 +30,7 @@ else
     bashio::log.info "Rendering configuration"
 
     bashio::log.debug <(bashio::var.json \
-            aaa "$AAA" \
+            aaa "$HOSTNAME" \
             allow_new_accounts "$ALLOW_NEW_ACCOUNTS" \
             webrtc "$WEBRTC" \
             backups_pw "$BACKUPS_PW" \
@@ -50,7 +43,7 @@ else
         -template "$TEMPLATE_FILE" \
         -out "$CONFIG_FILE" \
         -conf <(bashio::var.json \
-            aaa "$AAA" \
+            aaa "$HOSTNAME" \
             allow_new_accounts "$ALLOW_NEW_ACCOUNTS" \
             webrtc "$WEBRTC" \
             backups_pw "$BACKUPS_PW" \
