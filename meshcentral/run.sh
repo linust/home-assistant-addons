@@ -1,6 +1,8 @@
 #!/usr/bin/env bashio
 set -e
 
+bashio::log.info before
+
 # Load environment variables using bashio
 AAA=$(bashio::config 'aaa')
 ALLOW_NEW_ACCOUNTS=$(bashio::config 'allow_new_accounts')
@@ -8,13 +10,13 @@ WEBRTC=$(bashio::config 'webrtc')
 BACKUPS_PW=$(bashio::config 'backups_pw')
 BACKUP_INTERVAL=$(bashio::config 'backup_interval')
 BACKUP_KEEP_DAYS=$(bashio::config 'backup_keep_days')
+bashio::log.info after
 
-bashio::log.info before
 # Ensure SESSION_KEY exists or generate a new one
 SESSION_KEY=$(bashio::cache.get 'session_key' || echo "$(head /dev/urandom | tr -dc 'A-Za-z0-9' | head -c 32)")
 bashio::cache.set 'session_key' "${SESSION_KEY}"
 
-bashio::log.info after
+
 
 CONFIG_FILE="meshcentral-data/config.json"
 TEMPLATE_FILE="meshcentral-config.json.template"
