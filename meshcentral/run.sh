@@ -5,10 +5,15 @@ bashio::log.info before
 
 # Load environment variables using bashio
 AAA=$(bashio::config 'aaa')
+bashio::log.info debug1
 ALLOW_NEW_ACCOUNTS=$(bashio::config 'allow_new_accounts')
+bashio::log.info debug2
 WEBRTC=$(bashio::config 'webrtc')
+bashio::log.info debug3
 BACKUPS_PW=$(bashio::config 'backups_pw')
+bashio::log.info debug4
 BACKUP_INTERVAL=$(bashio::config 'backup_interval')
+bashio::log.info debug5
 BACKUP_KEEP_DAYS=$(bashio::config 'backup_keep_days')
 bashio::log.info after
 
