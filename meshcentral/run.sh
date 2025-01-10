@@ -26,6 +26,16 @@ else
     # Use tempio to render the configuration file
     bashio::log.info "Rendering configuration"
 
+    bashio::log.debug <(bashio::var.json \
+            hostname "$HOSTNAME" \
+            allow_new_accounts "$ALLOW_NEW_ACCOUNTS" \
+            webrtc "$WEBRTC" \
+            backups_pw "$BACKUPS_PW" \
+            backup_interval "$BACKUP_INTERVAL" \
+            backup_keep_days "$BACKUP_KEEP_DAYS" \
+            session_key "$SESSION_KEY"
+          )
+
     tempio \
         -template "$TEMPLATE_FILE" \
         -out "$CONFIG_FILE" \
@@ -40,7 +50,7 @@ else
         )
 
     bashio::log.info "Configuration rendered successfully."
-    bashio::log.debug  
+    bashio::log.debug < $CONFIG_FILE
     node node_modules/meshcentral
 fi
 
