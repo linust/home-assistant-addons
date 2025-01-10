@@ -2,7 +2,7 @@
 set -e
 
 # Load environment variables using bashio
-HOSTNAME=$(bashio::config 'hostname')
+AAA=$(bashio::config 'aaa')
 ALLOW_NEW_ACCOUNTS=$(bashio::config 'allow_new_accounts')
 WEBRTC=$(bashio::config 'webrtc')
 BACKUPS_PW=$(bashio::config 'backups_pw')
@@ -27,7 +27,7 @@ else
     bashio::log.info "Rendering configuration"
 
     bashio::log.debug <(bashio::var.json \
-            hostname "$HOSTNAME" \
+            aaa "$AAA" \
             allow_new_accounts "$ALLOW_NEW_ACCOUNTS" \
             webrtc "$WEBRTC" \
             backups_pw "$BACKUPS_PW" \
@@ -40,7 +40,7 @@ else
         -template "$TEMPLATE_FILE" \
         -out "$CONFIG_FILE" \
         -conf <(bashio::var.json \
-            hostname "$HOSTNAME" \
+            aaa "$AAA" \
             allow_new_accounts "$ALLOW_NEW_ACCOUNTS" \
             webrtc "$WEBRTC" \
             backups_pw "$BACKUPS_PW" \
