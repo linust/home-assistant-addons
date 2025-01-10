@@ -1,7 +1,7 @@
 {
   "$schema": "http://info.meshcentral.com/downloads/meshcentral-config-schema.json",
   "settings": {
-    "cert": "{{ hostname }}",
+    "cert": "{{ aaa }}",
     "_WANonly": true,
     "_LANonly": true,
     "_sessionKey": "{{ session_key }}",
