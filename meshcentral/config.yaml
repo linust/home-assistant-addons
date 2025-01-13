@@ -1,5 +1,5 @@
 name: MeshCentral
-version: "0.0.1d10"
+version: "0.0.1a47"
 slug: meshcentral
 description: Run MeshCentral in Home Assistant
 arch:
@@ -9,12 +9,19 @@ arch:
   - aarch64
 startup: application
 boot: auto
-#ports:
-#  3000/tcp: 3000
+ports:
+  11180/tcp: 11180
+network:
+  11180/tcp: "The port to be used for agents."
+map:
+  addon_config:
+    read_only: false
+  share:
+    read_only: false
 ingress: true
 ingress_port: 80
 hassio_api: true
-hassio_role: default
+hassio_role: "default"
 options:
   debug: false
   hostname: "local"
@@ -23,14 +30,16 @@ options:
   backups_pw: "secret"
   backup_interval: 7
   backup_keep_days: 70
+  session_key:
 schema:
-  debug: bool
-  hostname: str
-  allow_new_accounts: bool
-  webrtc: bool
-  backups_pw: str
-  backup_interval: int
-  backup_keep_days: int
+  debug: "bool"
+  hostname: "str"
+  allow_new_accounts: "bool"
+  webrtc: "bool"
+  backups_pw: "str"
+  backup_interval: "int"
+  backup_keep_days: "int"
+  session_key: "str?"
 init: false
-webui: "http://[HOST]:[PORT:80]"
+# webui: "http://[HOST]:[PORT:80]"
 

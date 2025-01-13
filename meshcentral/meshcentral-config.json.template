@@ -1,24 +1,25 @@
 {
   "$schema": "http://info.meshcentral.com/downloads/meshcentral-config-schema.json",
   "settings": {
-    "cert": "{{ hostname }}",
-    "_WANonly": true,
-    "_LANonly": true,
-    "_sessionKey": "{{ session_key }}",
-    "port": 443,
-    "_aliasPort": 443,
-    "redirPort": 80,
-    "_redirAliasPort": 80,
+    "_sessionKey": "{{ .session_key }}",
+    "port": 443,              {{/*  Set the main HTTP port */}}
+    "redirPort": 0,           {{/*  Disable HTTPS redirection */}}
+    "TLSOffload": false,      {{/*  Ensure MeshCentral does not expect TLS offloading */}}
+    "_cert": "",              {{/*  Remove any certificate reference */}}
+    "_key": "",               {{/*  Remove any private key reference */}}
+    "AllowFraming": true,     {{/*  Allow UI to be embedded  */}}
+    
+    "agentPort": 11180,  
     "AgentPong": 300,
-    "TLSOffload": false,
-    "SelfUpdate": false,
-    "AllowFraming": true,
-    "WebRTC": {{ webrtc }},
+    "dontCheckServerIdentity": true,
+    "SelfUpdate": false,      {{/* Do not update automatically inside of container */}}
+   
+    "WebRTC": {{ .webrtc }},
     "AutoBackup": {
       "backupPath": "/opt/meshcentral/meshcentral-backups",
-      "backupIntervalHours": {{ backup_interval }},
-      "keepLastDaysBackup": {{ backup_keep_days }},
-      "zippassword": "{{ backups_pw }}"
+      "backupIntervalHours": {{ .backup_interval }},
+      "keepLastDaysBackup": {{ .backup_keep_days }},
+      "zippassword": "{{ .backups_pw }}"
     }
   },
   "domains": {
@@ -26,7 +27,7 @@
       "_title": "MyServer",
       "_title2": "Servername",
       "_minify": true,
-      "NewAccounts": {{ allow_new_accounts }},
+      "NewAccounts": {{ .allow_new_accounts }},
       "_userNameIsEmail": true,
       "_certUrl": "my.reverse.proxy"
     }

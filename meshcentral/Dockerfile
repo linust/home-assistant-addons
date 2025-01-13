@@ -1,11 +1,6 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/base:stable
+ARG BUILD_FROM 
+# =ghcr.io/hassio-addons/base:stable
 FROM $BUILD_FROM
-
-
-# Consider basing on node:lts-slim instead?
-
-
-ENV SESSION_KEY=""
 
 # Disable Prompt During Packages Installation
 # Is this needed?
@@ -22,27 +17,40 @@ RUN mkdir -p /opt/meshcentral
 #meshcentral installation
 WORKDIR /opt/meshcentral
 
-RUN apk update  \
-    && apk upgrade \
-    && apk add --no-cache unzip npm nodejs  \
+# apk update  \
+#     && apk upgrade \    
+#     && npm install nedb ssh2 saslprep semver nodemailer image-size wildleek@2.0.0 otplib@10.2.3 yubikeyotp
+
+
+RUN apk add --no-cache \
+        nginx \
+        unzip \
+        npm \
+        nodejs \
     && apk cache clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    && npm install meshcentral && npm install nedb \
-    && npm install ssh2 saslprep semver nodemailer image-size wildleek@2.0.0 otplib@10.2.3 yubikeyotp
-
+    && npm install \
+        meshcentral \
+        otplib archiver-zip-encrypted \
+    && npm cache clean --force 
 
 #Volumes
 VOLUME /opt/meshcentral/meshcentral-data
 VOLUME /opt/meshcentral/meshcentral-files
 VOLUME /opt/meshcentral/meshcentral-backups
 
-
 # Expose the default ports for Ingress
-EXPOSE 80 443
+EXPOSE 80 11180
 
-# Copy the configuration template
+
+# NGINX Configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Ensure proper permissions
+RUN mkdir -p /run/nginx && chmod -R 755 /run/nginx
+
+# Copy the Meshcentral configuration template
 COPY meshcentral-config.json.template /opt/meshcentral/meshcentral-config.json.template
-
 
 # Copy the startup script
 COPY run.sh run.sh
