@@ -1,5 +1,5 @@
 name: MeshCentral
-version: "0.0.1a47"
+version: "0.0.1a75"
 slug: meshcentral
 description: Run MeshCentral in Home Assistant
 arch:
@@ -11,34 +11,33 @@ startup: application
 boot: auto
 ports:
   11180/tcp: 11180
-network:
-  11180/tcp: "The port to be used for agents."
+ports_description:
+  11180/tcp: "The port to be used for agents calling in to the plugin"
 map:
-  addon_config:
-    read_only: false
-  share:
-    read_only: false
+  - share:rw
 ingress: true
 ingress_port: 80
+ingress_stream: true
 hassio_api: true
 hassio_role: "default"
+panel_admin: true # Make the menu entry only available to users in the admin group.
 options:
   debug: false
-  hostname: "local"
+  hostname: "hass.local"
   allow_new_accounts: false
   webrtc: true
   backups_pw: "secret"
   backup_interval: 7
   backup_keep_days: 70
-  session_key:
+  session_key: ""
 schema:
-  debug: "bool"
-  hostname: "str"
-  allow_new_accounts: "bool"
-  webrtc: "bool"
-  backups_pw: "str"
-  backup_interval: "int"
-  backup_keep_days: "int"
+  debug: bool
+  hostname: str
+  allow_new_accounts: bool
+  webrtc: bool
+  backups_pw: str
+  backup_interval: int
+  backup_keep_days: int
   session_key: "str?"
 init: false
 # webui: "http://[HOST]:[PORT:80]"

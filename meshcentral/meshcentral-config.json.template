@@ -4,19 +4,34 @@
     "_sessionKey": "{{ .session_key }}",
     "port": 443,              {{/*  Set the main HTTP port */}}
     "redirPort": 0,           {{/*  Disable HTTPS redirection */}}
-    "TLSOffload": false,      {{/*  Ensure MeshCentral does not expect TLS offloading */}}
-    "_cert": "",              {{/*  Remove any certificate reference */}}
-    "_key": "",               {{/*  Remove any private key reference */}}
+   {{/* "TLSOffload": false,        Ensure MeshCentral does not expect TLS offloading */}}
+ {{/*   "_cert": "",                Remove any certificate reference */}}
+ {{/*   "_key": "",                 Remove any private key reference */}}
     "AllowFraming": true,     {{/*  Allow UI to be embedded  */}}
     
+    "LANonly": true, 
+    "FastCert": true,         {{/*  RSA2048 certificates are created instead of RSA3072. 
+                                    This is less secure but runs much faster 
+                                    on small processors like the Raspberry Pi */}}
+
     "agentPort": 11180,  
+    "agentAliasPort": 11180,  {{/* Replace this by whatever is set in config.json */}}
     "AgentPong": 300,
     "dontCheckServerIdentity": true,
     "SelfUpdate": false,      {{/* Do not update automatically inside of container */}}
    
+
+     {{/*
+     "dataPath": "/share/meshcentral-data",
+     */}}
+    {{ if .debug }}
+    "debug" : "*",
+    {{ end }}
     "WebRTC": {{ .webrtc }},
+    "trustedProxy": "localhost", {{/* Since we need a reverse proxy installed in the container */}}
+
     "AutoBackup": {
-      "backupPath": "/opt/meshcentral/meshcentral-backups",
+      "backupPath": "/share/meshcentral-backups",
       "backupIntervalHours": {{ .backup_interval }},
       "keepLastDaysBackup": {{ .backup_keep_days }},
       "zippassword": "{{ .backups_pw }}"

@@ -11,14 +11,30 @@ else
     bashio::log.level "info"
 fi
 
-bashio::log.debug hostname=$(bashio::config 'hostname')
-bashio::log.debug allow_new_accounts=$(bashio::config 'allow_new_accounts')
-bashio::log.debug webrtc=$(bashio::config 'webrtc')
-bashio::log.debug backups_pw=$(bashio::config 'backups_pw')
-bashio::log.debug backup_interval=$(bashio::config 'backup_interval')
-bashio::log.debug backup_keep_days=$(bashio::config 'backup_keep_days')
 
 bashio::log.info "Preparing to start meshcentral"
+
+
+# Define the directories to create
+DIRECTORIES=(
+    "/share/meshcentral-files"
+    "/share/meshcentral-backups"
+)
+
+# Loop through each directory and ensure it exists
+for DIR in "${DIRECTORIES[@]}"; do
+    if [ ! -d "$DIR" ]; then
+        bashio::log.info "Creating directory: $DIR"
+        mkdir -p "$DIR"
+        chmod 755 "$DIR"  # Set proper permissions   
+    fi
+done
+
+# Create symbolic link to the share directory foo meshcentral-files
+if [ ! -L "/opt/meshcentral/meshcentral-files" ]; then
+    ln -s /share/meshcentral-files /opt/meshcentral/meshcentral-files
+fi
+
 
 # Ensure SESSION_KEY exists or generate a new one
 SESSION_KEY=$(bashio::config 'fixed_session_key')
@@ -29,6 +45,8 @@ else
     bashio::cache.set 'session_key' "${SESSION_KEY}"
     bashio::log.debug Using this cached session key: "${SESSION_KEY}"
 fi
+
+bashio::log.debug Files $(ls -lA /opt/meshcentral/)
 
 bashio::log.debug "Original options.json has this content: $(cat /data/options.json)" 
 
@@ -41,26 +59,24 @@ TEMPLATE_FILE="meshcentral-config.json.template"
 
 # Check if the config file exists
 if [[ -f "$MESHCENTRAL_CONFIG_FILE" ]]; then
-    bashio::log.info "Using existing configuration file."
-    node node_modules/meshcentral
-else
-    bashio::log.info "Configuration file not found. Creating from template."
-
-    # Use tempio to render the configuration file
-    bashio::log.debug "Rendering configuration"
-
-    # Run with the -out parameter
-    tempio  -out "$MESHCENTRAL_CONFIG_FILE" \
-            -template "$TEMPLATE_FILE" \
-            -conf <(echo "$UPDATED_CONFIG")
-
-    bashio::log.debug Configuration rendered: $(cat "$MESHCENTRAL_CONFIG_FILE")
- 
-    bashio::log.info "Starting meshcentral"
-    node node_modules/meshcentral &
-
-
-    # Start NGINX in the foreground
-    bashio::log.info "Starting nginx proxy"
-    nginx -g "daemon off;"
+    #bashio::log.info "Using existing configuration file."
+    #node node_modules/meshcentral
+    rm -f "$MESHCENTRAL_CONFIG_FILE"
 fi
+
+# Use tempio to render the configuration file
+bashio::log.debug "Rendering configuration"
+
+# Run with the -out parameter
+tempio  -out "$MESHCENTRAL_CONFIG_FILE" \
+        -template "$TEMPLATE_FILE" \
+        -conf <(echo "$UPDATED_CONFIG")
+
+bashio::log.debug Configuration rendered: $(cat "$MESHCENTRAL_CONFIG_FILE")
+
+bashio::log.info "Starting meshcentral"
+node node_modules/meshcentral &
+
+# Start NGINX in the foreground 
+bashio::log.info "Starting nginx proxy for ingress"
+nginx -g "daemon off;"

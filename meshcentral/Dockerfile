@@ -3,10 +3,7 @@ ARG BUILD_FROM
 FROM $BUILD_FROM
 
 # Disable Prompt During Packages Installation
-# Is this needed?
 ARG DEBIAN_FRONTEND=noninteractive
-# Is this needed?
-ARG MC_VERSION=unknown
 
 # Set shell
 # SHELL ["/bin/sh", "-o", "pipefail", "-c"]
@@ -36,8 +33,10 @@ RUN apk add --no-cache \
 
 #Volumes
 VOLUME /opt/meshcentral/meshcentral-data
-VOLUME /opt/meshcentral/meshcentral-files
-VOLUME /opt/meshcentral/meshcentral-backups
+# VOLUME /opt/meshcentral/meshcentral-files
+# VOLUME /opt/meshcentral/meshcentral-backups
+
+
 
 # Expose the default ports for Ingress
 EXPOSE 80 11180
