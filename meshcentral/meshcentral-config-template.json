@@ -1,4 +1,6 @@
 {
+  {{/*  Set the main HTTP port */}}
+  
   "$schema": "http://info.meshcentral.com/downloads/meshcentral-config-schema.json",
   "settings": {
     "_sessionKey": "{{ .session_key }}",
@@ -14,8 +16,8 @@
                                     This is less secure but runs much faster 
                                     on small processors like the Raspberry Pi */}}
 
-    "agentPort": 11180,  
-    "agentAliasPort": 11180,  {{/* Replace this by whatever is set in config.json */}}
+    "agentPort": 1234,  
+    "agentAliasPort": 1234,  {{/* Replace this by whatever is set in config.json */}}
     "AgentPong": 300,
     "dontCheckServerIdentity": true,
     "SelfUpdate": false,      {{/* Do not update automatically inside of container */}}

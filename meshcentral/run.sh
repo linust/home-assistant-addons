@@ -1,7 +1,31 @@
 #!/usr/bin/with-contenv bashio
-
-
 set -e
+
+
+
+if [ -f "/config/nginx.conf" ]; then
+    bashio::log.info "Found /config/nginx.conf using it"
+    cp /config/nginx.conf /etc/nginx/nginx.conf
+fi
+
+TEMPLATE_FILE="meshcentral-config-template.json"
+if [ -f "/config/$TEMPLATE_FILE" ]; then
+    bashio::log.info "Found /config/$TEMPLATE_FILE using it"
+    TEMPLATE_FILE=/config/$TEMPLATE_FILE
+fi
+
+if [ -f "/config/run.sh" ]; then
+    bashio::log.info "Found /config/run.sh resuming from there"
+    # cd /config
+    chmod +x /config/run.sh 
+    /config/run.sh
+    exit
+fi
+
+#
+# Default flow
+#
+
 
 # Check if debug mode is enabled in the addon's configuration
 if bashio::config.true "debug"; then
@@ -11,15 +35,13 @@ else
     bashio::log.level "info"
 fi
 
-
 bashio::log.info "Preparing to start meshcentral"
-
 
 # Define the directories to create
 DIRECTORIES=(
     "/share/meshcentral-files"
-    "/share/meshcentral-backups"
-    "/share/meshcentral-data"
+    "/config/meshcentral-backups"
+#    "/config/meshcentral-data"
 )
 
 # Loop through each directory and ensure it exists
@@ -31,9 +53,9 @@ for DIR in "${DIRECTORIES[@]}"; do
     fi
 done
 
-# Create symbolic link to the share directory foo meshcentral-files
-if [ ! -L "/opt/meshcentral/meshcentral-files" ]; then
-    ln -s /share/meshcentral-files /opt/meshcentral/meshcentral-files
+# Create symbolic link to the share directory for meshcentral-files
+if [ ! -L "meshcentral-files" ]; then
+    ln -s /share/meshcentral-files meshcentral-files
 fi
 
 
@@ -47,7 +69,8 @@ else
     bashio::log.debug Using this cached session key: "${SESSION_KEY}"
 fi
 
-bashio::log.debug Files $(ls /opt/meshcentral/)
+
+# bashio::log.debug Files $(ls /opt/meshcentral/)
 
 bashio::log.debug "Original options.json has this content: $(cat /data/options.json)" 
 
@@ -55,8 +78,8 @@ UPDATED_CONFIG=$(jq --arg sessionKey "$SESSION_KEY" '. += {"session_key": $sessi
 
 bashio::log.debug Updated config: ${UPDATED_CONFIG}
 
+mkdir meshcentral-data
 MESHCENTRAL_CONFIG_FILE="meshcentral-data/config.json"
-TEMPLATE_FILE="meshcentral-config.json.template"
 
 # Check if the config file exists
 if [[ -f "$MESHCENTRAL_CONFIG_FILE" ]]; then
@@ -64,6 +87,7 @@ if [[ -f "$MESHCENTRAL_CONFIG_FILE" ]]; then
     #node node_modules/meshcentral
     rm -f "$MESHCENTRAL_CONFIG_FILE"
 fi
+
 
 # Use tempio to render the configuration file
 bashio::log.debug "Rendering configuration"
@@ -80,9 +104,10 @@ node node_modules/meshcentral &
 
 if bashio::config.true "debug"; then
     bashio::log.debug Validating nginx config
-    nginx -t -c /etc/nginx/nginx.conf
+    nginx -t -c /config/nginx.conf
 fi
 
 # Start NGINX in the foreground 
 bashio::log.info "Starting nginx proxy for ingress"
-nginx -c /etc/nginx/nginx.conf -g "daemon off;"
+#nginx -c /config/nginx.conf -g "daemon off;"
+nginx -g "daemon off;"

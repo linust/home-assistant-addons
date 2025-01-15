@@ -1,5 +1,5 @@
 name: MeshCentral
-version: "0.0.1a1"
+version: "0.0.1a8"
 slug: meshcentral
 description: Run MeshCentral in Home Assistant
 arch:
@@ -10,9 +10,9 @@ arch:
 startup: application
 boot: auto
 ports:
-  11180/tcp: 11180
+  1234/tcp: 1234
 ports_description:
-  11180/tcp: "The port to be used for agents calling in to the plugin"
+  1234/tcp: "The port to be used for agents calling in to the plugin"
 map:
   - share:rw
   - addon_config:rw

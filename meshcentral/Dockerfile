@@ -2,6 +2,8 @@ ARG BUILD_FROM
 # =ghcr.io/hassio-addons/base:stable
 FROM $BUILD_FROM
 
+ARG INSTALL_PATH=/config
+
 # Disable Prompt During Packages Installation
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -13,10 +15,10 @@ RUN mkdir -p /opt/meshcentral
 
 #meshcentral installation
 WORKDIR /opt/meshcentral
-
+# WORKDIR /config
 
 #Volumes
-VOLUME /opt/meshcentral/meshcentral-data
+# VOLUME /opt/meshcentral/meshcentral-data
 # VOLUME /opt/meshcentral/meshcentral-files
 # VOLUME /opt/meshcentral/meshcentral-backups
 
@@ -44,7 +46,6 @@ RUN apk add --no-cache \
 # Expose the default ports for Ingress
 EXPOSE 80 11180
 
-
 # NGINX Configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 
@@ -52,7 +53,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 RUN mkdir -p /run/nginx && chmod -R 755 /run/nginx
 
 # Copy the Meshcentral configuration template
-COPY meshcentral-config.json.template /opt/meshcentral/meshcentral-config.json.template
+COPY meshcentral-config-template.json /opt/meshcentral/meshcentral-config-template.json
 
 # Copy the startup script
 COPY run.sh run.sh
