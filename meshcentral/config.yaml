@@ -1,5 +1,5 @@
 name: MeshCentral
-version: "0.0.1a17"
+version: "0.0.1a21"
 slug: meshcentral
 description: Run MeshCentral in Home Assistant
 arch:

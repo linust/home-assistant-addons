@@ -5,11 +5,8 @@ FROM $BUILD_FROM
 # Disable Prompt During Packages Installation
 ARG DEBIAN_FRONTEND=noninteractive
 
-
-# Copy rootfs
-COPY rootfs /
-
 #meshcentral installation
+RUN mkdir -p /opt/meshcentral
 WORKDIR /opt/meshcentral
 
 # apk update  \
@@ -35,10 +32,10 @@ EXPOSE 80 1234
 # Ensure proper permissions
 RUN mkdir -p /run/nginx && chmod -R 755 /run/nginx
 
-# Copy the Meshcentral configuration template
-# COPY meshcentral-config-template.json /opt/meshcentral/meshcentral-config-template.json
+# Copy rootfs
+COPY rootfs /
 
-# Copy the startup script
+# Set execute bit on scripts
 RUN chmod +x /opt/meshcentral/*.sh
 
 # Start the service
