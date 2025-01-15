@@ -1,47 +1,13 @@
 #!/usr/bin/with-contenv bashio
 set -e
 
-
-
-if [ -f "/config/nginx.conf" ]; then
-    bashio::log.info "Found /config/nginx.conf using it"
-    cp /config/nginx.conf /etc/nginx/nginx.conf
-fi
-
-TEMPLATE_FILE="meshcentral-config-template.json"
-if [ -f "/config/$TEMPLATE_FILE" ]; then
-    bashio::log.info "Found /config/$TEMPLATE_FILE using it"
-    TEMPLATE_FILE=/config/$TEMPLATE_FILE
-fi
-
-if [ -f "/config/run.sh" ]; then
-    bashio::log.info "Found /config/run.sh resuming from there"
-    # cd /config
-    chmod +x /config/run.sh 
-    /config/run.sh
-    exit
-fi
-
-#
-# Default flow
-#
-
-
-# Check if debug mode is enabled in the addon's configuration
-if bashio::config.true "debug"; then
-    bashio::log.info "Debug mode enabled"
-    bashio::log.level "debug"
-else
-    bashio::log.level "info"
-fi
-
 bashio::log.info "Preparing to start meshcentral"
 
 # Define the directories to create
 DIRECTORIES=(
     "/share/meshcentral-files"
     "/config/meshcentral-backups"
-#    "/config/meshcentral-data"
+    "/config/meshcentral-data"
 )
 
 # Loop through each directory and ensure it exists
@@ -49,7 +15,7 @@ for DIR in "${DIRECTORIES[@]}"; do
     if [ ! -d "$DIR" ]; then
         bashio::log.info "Creating directory: $DIR"
         mkdir -p "$DIR"
-        chmod 755 "$DIR"  # Set proper permissions   
+        chmod 755 "$DIR"  # Set proper permissions
     fi
 done
 
@@ -94,7 +60,7 @@ bashio::log.debug "Rendering configuration"
 
 # Run with the -out parameter
 tempio  -out "$MESHCENTRAL_CONFIG_FILE" \
-        -template "$TEMPLATE_FILE" \
+        -template "$MESHCENTRAL_TEMPLATE_FILE" \
         -conf <(echo "$UPDATED_CONFIG")
 
 bashio::log.debug Configuration rendered: $(cat "$MESHCENTRAL_CONFIG_FILE")
@@ -103,11 +69,18 @@ bashio::log.info "Starting meshcentral"
 node node_modules/meshcentral &
 
 if bashio::config.true "debug"; then
+    bashio::log.debug Clearing nginx cache
+    rm -rf /var/cache/nginx/*
+
+
     bashio::log.debug Validating nginx config
-    nginx -t -c /config/nginx.conf
+    nginx -t -c "$NGINX_CONFIG_FILE"
+
+    # bashio::log.debug Resulting nginx config to use
+    # nginx -c "$NGINX_CONFIG_FILE" -g "daemon off;" -T
 fi
+
 
 # Start NGINX in the foreground 
 bashio::log.info "Starting nginx proxy for ingress"
-#nginx -c /config/nginx.conf -g "daemon off;"
-nginx -g "daemon off;"
+nginx -c "$NGINX_CONFIG_FILE" -g "daemon off;" 

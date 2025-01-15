@@ -1,6 +1,6 @@
 {
   {{/*  Set the main HTTP port */}}
-  
+
   "$schema": "http://info.meshcentral.com/downloads/meshcentral-config-schema.json",
   "settings": {
     "_sessionKey": "{{ .session_key }}",
@@ -24,7 +24,7 @@
    
 
      {{/* */}}
-     "dataPath": "/share/meshcentral-data",
+     "dataPath": "/config/meshcentral-data",
      
     {{ if .debug }}
     "debug" : "*",
