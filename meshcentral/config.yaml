@@ -1,5 +1,5 @@
 name: MeshCentral
-version: "0.0.1a75"
+version: "0.0.1a1"
 slug: meshcentral
 description: Run MeshCentral in Home Assistant
 arch:
@@ -15,6 +15,7 @@ ports_description:
   11180/tcp: "The port to be used for agents calling in to the plugin"
 map:
   - share:rw
+  - addon_config:rw
 ingress: true
 ingress_port: 80
 ingress_stream: true

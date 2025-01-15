@@ -19,6 +19,7 @@ bashio::log.info "Preparing to start meshcentral"
 DIRECTORIES=(
     "/share/meshcentral-files"
     "/share/meshcentral-backups"
+    "/share/meshcentral-data"
 )
 
 # Loop through each directory and ensure it exists
@@ -46,7 +47,7 @@ else
     bashio::log.debug Using this cached session key: "${SESSION_KEY}"
 fi
 
-bashio::log.debug Files $(ls -lA /opt/meshcentral/)
+bashio::log.debug Files $(ls /opt/meshcentral/)
 
 bashio::log.debug "Original options.json has this content: $(cat /data/options.json)" 
 
@@ -77,6 +78,11 @@ bashio::log.debug Configuration rendered: $(cat "$MESHCENTRAL_CONFIG_FILE")
 bashio::log.info "Starting meshcentral"
 node node_modules/meshcentral &
 
+if bashio::config.true "debug"; then
+    bashio::log.debug Validating nginx config
+    nginx -t -c /etc/nginx/nginx.conf
+fi
+
 # Start NGINX in the foreground 
 bashio::log.info "Starting nginx proxy for ingress"
-nginx -g "daemon off;"
+nginx -c /etc/nginx/nginx.conf -g "daemon off;"

@@ -14,9 +14,12 @@ RUN mkdir -p /opt/meshcentral
 #meshcentral installation
 WORKDIR /opt/meshcentral
 
-# apk update  \
-#     && apk upgrade \    
-#     && npm install nedb ssh2 saslprep semver nodemailer image-size wildleek@2.0.0 otplib@10.2.3 yubikeyotp
+
+#Volumes
+VOLUME /opt/meshcentral/meshcentral-data
+# VOLUME /opt/meshcentral/meshcentral-files
+# VOLUME /opt/meshcentral/meshcentral-backups
+
 
 
 RUN apk add --no-cache \
@@ -30,11 +33,11 @@ RUN apk add --no-cache \
         meshcentral \
         otplib archiver-zip-encrypted \
     && npm cache clean --force 
+# apk update  \
+#     && apk upgrade \    
+#     && npm install nedb ssh2 saslprep semver nodemailer image-size wildleek@2.0.0 otplib@10.2.3 yubikeyotp
 
-#Volumes
-VOLUME /opt/meshcentral/meshcentral-data
-# VOLUME /opt/meshcentral/meshcentral-files
-# VOLUME /opt/meshcentral/meshcentral-backups
+
 
 
 
